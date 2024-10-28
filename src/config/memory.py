@@ -35,21 +35,30 @@ class InMemoryHistory(BaseChatMessageHistory, BaseModel):
         """
         self.messages.extend(messages)
 
-    def get_session_history(self) -> List[BaseMessage]:
-        """
-        Returns the session history.
-
-        Returns
-        -------
-        List[BaseMessage]
-            The list of messages in the session history.
-        """
-        return self.messages
-
     def clear(self) -> None:
         """
         Clears the message history.
         """
         self.messages = []
 
-memory = InMemoryHistory()
+store = {}
+
+def get_by_session_id(session_id: str) -> BaseChatMessageHistory:
+    """
+    Retrieves the chat message history for a given session ID.
+
+    If the session ID does not exist in the store, a new `InMemoryHistory` instance is created and stored.
+
+    Parameters
+    ----------
+    session_id : str
+        The session ID for which to retrieve the chat message history.
+
+    Returns
+    -------
+    BaseChatMessageHistory
+        The chat message history associated with the given session ID.
+    """
+    if session_id not in store:
+        store[session_id] = InMemoryHistory()
+    return store[session_id]
