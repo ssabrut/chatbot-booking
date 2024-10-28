@@ -51,3 +51,5 @@ class InMemoryHistory(BaseChatMessageHistory, BaseModel):
         Clears the message history.
         """
         self.messages = []
+
+memory = InMemoryHistory()

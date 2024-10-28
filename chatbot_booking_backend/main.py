@@ -1,18 +1,6 @@
-from pydantic import BaseModel, Field
-from typing import List
-from langchain_community.memory.kg import ConversationKGMemory
-from langchain_core.chat_history import BaseChatMessageHistory
-from langchain.prompts.prompt import PromptTemplate
 from langchain_ollama import ChatOllama
-from langchain_core.messages import BaseMessage, AIMessage
+from langchain_core.messages import AIMessage
 from langchain_core.runnables.history import RunnableWithMessageHistory
-from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-
-prompt = ChatPromptTemplate.from_messages([
-    ("system", "You're an assistant"),
-    MessagesPlaceholder(variable_name="history"),
-    ("human", "{input}"),
-])
 
 llm = ChatOllama(model="llama3.1")
 
