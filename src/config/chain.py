@@ -1,14 +1,31 @@
-from src.config.memory import get_by_session_id
-from src.config.prompt import base_prompt
-from langchain_ollama import ChatOllama
-from langchain_core.runnables.history import RunnableWithMessageHistory
+from src.config.llm import llm
+from src.config.memory import memory
+from langchain.chains import ConversationChain
+from langchain.prompts import PromptTemplate
 
-llm = ChatOllama(model="llama3.1")
-chain = base_prompt | llm
+# Define your custom prompt
+custom_prompt = PromptTemplate(
+    input_variables=["history", "input"],
+    template="""You are a virtual assistant responsible for taking restaurant reservations. Your task is to collect the following information:
+- Name
+- Number of people
+- Date
+- Time
+- Special requests (if any)
 
-chain_with_history = RunnableWithMessageHistory(
-    chain,
-    get_by_session_id,
-    input_messages_key="input",
-    history_messages_key="history"
+Provide a confirmation after you have all the required details. Keep your responses short and concise. Do not include any irrelevant information or make the text unnecessarily long.
+
+History:
+{history}
+
+Curent Conversation:
+Human: {input}
+AI:"""
+)
+
+chain = ConversationChain(
+    llm=llm,
+    verbose=True,
+    memory=memory,
+    prompt=custom_prompt
 )
