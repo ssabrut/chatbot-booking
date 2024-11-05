@@ -1,2 +1,2 @@
-name,num_people,date,time,special_request
-John Doe,4,2020-12-25,18:00,Window seat
+name,email,phone_number,num_people,date,time,special_request
+John Doe,test@gmail.com,+62 822-7777-4444,4,2020-12-25,18:00,Window seat

@@ -1,8 +1,6 @@
 import time
-import dateparser
 import streamlit as st
 from src.config.chain import executor
-from rapidfuzz import fuzz, process
 
 def get_response(prompt: str):
     """
@@ -32,28 +30,3 @@ def get_response(prompt: str):
     for word in response["output"].split():
         yield word + " "
         time.sleep(0.05)
-
-def format_relative_day(relative_day: str) -> str:
-    reference_keywords = [
-        "today", "tomorrow", "yesterday",
-        "in", "next", "last", "ago", "before", "after",
-        "the day after tomorrow", "the day before yesterday",
-        "monday", "tuesday", "wednesday", "thursday",
-        "friday", "saturday", "sunday", "week", "weeks",
-        "month", "months"
-    ]
-    normalized_day = relative_day.strip().lower()
-    best_match, score, _ = process.extractOne(normalized_day, reference_keywords, scorer=fuzz.WRatio) # best_match, score, index
-    MATCH_THRESHOLD = 60
-
-    if score < MATCH_THRESHOLD:
-        raise f"Low confidence in interpreting '{relative_day}'. Attempting to parse directly."
-
-    parsed_date = dateparser.parse(best_match)
-
-    print(f"{best_match}: {parsed_date}")
-
-    if parsed_date:
-        return parsed_date.strftime('%Y-%m-%d')
-    else:
-        raise ValueError(f"Unable to parse the input: '{relative_day}'.")

@@ -18,6 +18,8 @@ class Booking(BaseModel):
         Any special requests or notes for the booking.
     """
     name: str = ""
+    email: str = ""
+    phone_number: str = ""
     num_people: int = 0
     date: str = ""
     time: str = ""
