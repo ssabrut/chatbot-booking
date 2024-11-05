@@ -1,6 +1,8 @@
 from src.utils import get_response
+from src.schema import Booking
 import streamlit as st
 import pandas as pd
+import streamlit as st
 
 def run():
     # Set the page configuration to always show the sidebar
@@ -15,6 +17,9 @@ def run():
     # Initialize memory if not already in session state
     if 'messages' not in st.session_state:
         st.session_state.messages = []
+
+    if 'booking' not in st.session_state:
+        st.session_state.booking = Booking()
 
     # Display chat messages from history on app rerun
     for message in st.session_state.messages:
